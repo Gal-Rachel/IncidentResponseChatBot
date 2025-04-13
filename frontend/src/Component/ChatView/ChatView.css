@@ -1,0 +1,156 @@
+.ChatView {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #122a4c;
+    color: white;
+    padding: 1rem;
+}
+
+.ChatHeader {
+    border-bottom: 1px solid #2d4a77;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.ChatMessages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 2rem;
+    scrollbar-width: none;
+}
+
+.ChatMessages::-webkit-scrollbar {
+    display: none;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    max-width: 60%;
+    position: relative;
+}
+
+.message.user {
+    align-self: flex-end;
+    background-color: #3478c3;
+}
+
+.message.bot {
+    align-self: flex-start;
+    background-color: #1e3a5f;
+}
+
+.icon-wrapper {
+    font-size: 1.5rem;
+    color: white;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.user-icon-wrapper {
+    right: -2rem;
+    /* המרחק של האייקון מההודעה בצד ימין */
+}
+
+.bot-icon-wrapper {
+    left: -2rem;
+    /* המרחק של האייקון מההודעה בצד שמאל */
+}
+
+
+
+.ChatInputArea {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.ChatInputArea input {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.ChatInputArea button {
+    padding: 0.75rem 1rem;
+    background-color: #2e64a1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ChatInputArea button:hover {
+    background-color: #3d7fc1;
+}
+
+.ChatHeader h2 {
+    font-size: 1.5rem;
+    /* גודל טקסט מותאם */
+    font-weight: bold;
+    /* הדגשת הטקסט */
+    color: #ffffff;
+    /* צבע לבן לכותרת */
+    display: flex;
+    align-items: center;
+    /* ממרכז את התוכן במרכז האנכי */
+    justify-content: center;
+    /* ממרכז את התוכן במרכז האופקי */
+    gap: 0.5rem;
+    /* ריווח בין האייקון לכותרת */
+    text-align: center;
+    /* ממקם את הטקסט במרכז */
+}
+
+.ChatHeader {
+    display: flex;
+    justify-content: center;
+    /* ממרכז את כל ה-ChatHeader */
+    align-items: center;
+    /* ממרכז את התוכן בתוך ה-ChatHeader */
+}
+
+.send-button {
+    padding: 0.75rem 1rem;
+    background-color: #2e64a1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.send-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,225 @@
+.ChatHistory {
+    width: 25%;
+    height: 100vh;
+    box-sizing: border-box;
+    border-radius: 1.5px;
+    padding: 1rem;
+    background-color: rgb(15, 32, 61);
+    box-shadow: rgb(4, 6, 54) 0px 0px 10px 0px;
+    overflow-y: scroll;
+}
+
+/* הסתרת סרגל הגלילה */
+.ChatHistory::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+/* הגדרת sticky לכותרת ולחיפוש */
+.ChatHistoryHeader,
+.search-container {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    /* מבטיח שהכותרת והחיפוש יהיו תמיד מעל לתוכן */
+    background-color: rgb(15, 32, 61);
+    padding: 0.5rem;
+    /* לוודא שהרקע לא יתמזג עם התוכן */
+}
+
+/* הגדרת גלילה בתוך גוף התוכן */
+.ChatHistoryBody {
+    overflow-y: scroll;
+    /* מאפשר גלילה על התוכן */
+    max-height: calc(100vh - 150px);
+    /* תתאם את הגובה לפי גובה הכותרת והחיפוש */
+    padding-right: 0;
+    padding-top: 1.5rem;
+    /* הוסף ריווח עליון כדי למנוע חפיפות עם הכותרת */
+    padding-left: 0.5rem;
+    box-sizing: border-box;
+    -ms-overflow-style: none;
+    /* מסיר את סרגל הגלילה בדפדפני אינטרנט אקספלורר */
+    scrollbar-width: none;
+    /* מסיר את סרגל הגלילה בדפדפני Firefox */
+}
+
+.ChatHistoryHeader {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+    color: rgb(255, 255, 255);
+    font-size: 1.25rem;
+    font-weight: bold;
+    flex-direction: column;
+
+    justify-content: flex-end;
+    /* דוחף את התוכן כלפי מטה */
+
+}
+
+/* הסתרת סרגל הגלילה בדפדפנים מודרניים */
+.ChatHistoryBody::-webkit-scrollbar {
+    width: 0px;
+    /* מסיר את סרגל הגלילה */
+    background: transparent;
+    /* רקע שקוף */
+}
+
+/* מיקום וסידור האייקון והטקסט */
+.ChatHistoryHeaderTitleText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* הוספת ריווח בין האייקון לטקסט */
+.ChatHistoryHeaderTitleText .icon {
+    margin-right: 0.5rem;
+}
+
+.search-container {
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    background-color: #1e3a5f;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    color: white;
+    box-sizing: border-box;
+}
+
+.search-container input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+    padding-left: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-container input::placeholder {
+    color: #ccc;
+}
+
+.search-container svg {
+    font-size: 1.2rem;
+    color: white;
+}
+
+/* המראה של כפתור השיחה החדשה */
+.new-chat-button {
+    width: 100%;
+    padding: 0.6rem;
+    background-color: #2e64a1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.new-chat-button:hover {
+    background-color: #3d7fc1;
+}
+
+.chat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+    /* אם רוצים להסתיר גלילה על רשימת השיחות */
+}
+
+/* המראה של פריטי הרשימה */
+.chat-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    background-color: #556c8b65;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    justify-content: center;
+    /* ממרכז את הלינק בהורה */
+    align-items: center;
+    /* ממקם את הלינק במרכז מבחינה אנכית */
+    overflow: hidden;
+    /* מכסה טקסט חורג */
+    white-space: nowrap;
+    /* מונע מעבר לשורה חדשה */
+}
+
+.chat-item:hover {
+    background-color: #2e4d73;
+}
+
+/* העיצוב של הלינק */
+.chat-item a {
+    display: inline-block;
+    color: #ffffff;
+    /* הצבע הרצוי */
+    text-decoration: none;
+    /* הסרת קו תחתון */
+    text-align: center;
+    /* ממקם את הטקסט במרכז */
+
+    max-width: 200px;
+    /* הגבלת רוחב הכפתור */
+    overflow: hidden;
+    /* חותך טקסט חורג */
+    text-overflow: ellipsis;
+    /* הוספת "..." אם הטקסט ארוך מדי */
+    white-space: nowrap;
+    /* מונע מעבר לשורה חדשה */
+    border-radius: 5px;
+    /* מעגל פינות */
+    transition: background-color 0.3s, transform 0.3s;
+    /* אנימציה חלקה */
+}
+
+/* צבע בעת ריחוף */
+.chat-item a:hover {
+    color: #787878;
+    /* צבע בעת ריחוף */
+    text-decoration: none;
+    transform: scale(1.15);
+    /* הגדלה קלה של הלינק */
+}
+
+
+.PoweredBy {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ccc;
+    /* צבע רך */
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #1e3a5f;
+    /* צבע רקע כהה */
+    border-top: 1px solid #51586b;
+    /* קו גבול דק מעל */
+    border-radius: 0 0 6px 6px;
+    /* פינות מעוגלות בתחתית */
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+    /* צללית רכה */
+}
+
+.PoweredBy a {
+    color: #fff;
+    /* צבע הלינק לבן */
+    text-decoration: none;
+    /* הסרת קו תחתון */
+    font-weight: bold;
+}

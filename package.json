@@ -1,5 +1,13 @@
 {
   "dependencies": {
     "lucide-react": "^0.482.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backendserver && nodemon server.js",
+    "client": "cd frontend && npm start"
   }
 }
