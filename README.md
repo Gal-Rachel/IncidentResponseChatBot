@@ -72,3 +72,10 @@ npm start
 Frontend
 cd client
 npm start
+
+```
+
+👩‍💻 Authors
+Gal Shmuel 
+Rachel Yeholashet
+
