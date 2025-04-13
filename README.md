@@ -58,14 +58,15 @@ cd ../client
 npm install
 
 3. Configure environment variables:
+
 Create a .env file in /server with the following:
 MONGO_URI=your_mongodb_atlas_connection_string
 PORT=5000
 
 4. Run the project:
 In two terminals:
-Backend
 
+Backend
 cd server
 npm start
 
