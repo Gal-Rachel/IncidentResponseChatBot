@@ -26,11 +26,17 @@ It allows users to interact through a sleek chat interface, while automatically 
 
 ## 📂 Project Structure
 
-IncidentResponseChatBot/ ├── client/ # React frontend │ ├── components/ # Chat, MessageList, History, etc. │ └── ... ├── server/ # Express backend │ ├── routes/ # API routes │ ├── models/ # Mongoose schemas │ └── ... ├── .gitignore ├── package.json └── README.md
-
-yaml
-Copy
-Edit
+IncidentResponseChatBot/ 
+    ├── client/ # React frontend 
+        │ ├── components/ # Chat, MessageList, History, etc. 
+        │ └── ... 
+        ├── server/ # Express backend 
+            │ ├── routes/ # API routes 
+            │ ├── models/ # Mongoose schemas 
+            │ └── ... 
+            ├── .gitignore 
+            ├── package.json 
+    └── README.md
 
 ---
 
@@ -40,40 +46,29 @@ Edit
 ```bash
 git clone https://github.com/Gal-Rachel/IncidentResponseChatBot.git
 cd IncidentResponseChatBot
+
 2. Install dependencies:
+
 Backend:
-bash
-Copy
-Edit
 cd server
 npm install
+
 Frontend:
-bash
-Copy
-Edit
 cd ../client
 npm install
+
 3. Configure environment variables:
 Create a .env file in /server with the following:
-
-ini
-Copy
-Edit
 MONGO_URI=your_mongodb_atlas_connection_string
 PORT=5000
+
 4. Run the project:
 In two terminals:
 Backend
 
-bash
-Copy
-Edit
 cd server
 npm start
-Frontend
 
-bash
-Copy
-Edit
+Frontend
 cd client
 npm start
