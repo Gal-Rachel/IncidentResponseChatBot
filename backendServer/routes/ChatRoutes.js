@@ -16,6 +16,23 @@ router.post('/new', async (req, res) => {
     }
 });
 
+
+// נתיב חדש לשאול את ה-Agent
+router.post('/ask-agent', async (req, res) => {
+    const { message } = req.body;  // מקבל את ההודעה מהמשתמש
+
+    try {
+        // שולח את הבקשה לשרת ה-Python
+        const response = await axios.post('http://localhost:5000/ask-agent', { message });
+
+        // מחזיר את התשובה מה-Agent ל-Frontend
+        res.json({ response: response.data.response });
+    } catch (err) {
+        console.error("Error asking agent:", err.message);
+        res.status(500).json({ error: 'Error connecting to AutoGen server' });
+    }
+});
+
 // שליפת כל ההיסטוריה
 router.get('/', async (req, res) => {
     try {
