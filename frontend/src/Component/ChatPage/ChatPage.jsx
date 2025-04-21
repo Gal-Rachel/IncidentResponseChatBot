@@ -8,7 +8,7 @@ export default function ChatPage() {
 
     const refreshChats = async () => {
         try {
-            const response = await fetch("http://localhost:5000/chats");
+            const response = await fetch("http://localhost:5000/");
             const data = await response.json();
             setChats(data);
         } catch (error) {
@@ -22,8 +22,8 @@ export default function ChatPage() {
 
     return (
         <div className="ChatPage">
-            <ChatHistory chats={chats} onChatUpdate={refreshChats} /> {/* העבר את פונקציית העדכון */}
-            <ChatView onChatUpdate={refreshChats} /> {/* וודא שזה קיים */}
+            <ChatHistory chats={chats} onChatUpdate={refreshChats} /> {/*העבר את פונקציית העדכון */}
+            {/* <ChatView onChatUpdate={refreshChats} /> וודא שזה קיים */}
         </div>
     );
 }
