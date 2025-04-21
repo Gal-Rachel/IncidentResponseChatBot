@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import chatRoutes from './routes/ChatRoutes.js';
+import botRoutes from './routes/BotRoutes.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/chats', chatRoutes);
+app.use('/api/bot', botRoutes);
 
 // app.get('/', (req, res) => {
 //     res.send('Server is running...');

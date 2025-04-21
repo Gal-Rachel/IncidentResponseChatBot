@@ -1,7 +1,6 @@
 [
     {
-        "model": "deepseek/deepseek-v3-base:free",
-        "base_url": "https://openrouter.ai/api/v1",
-        "api_key": "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"
+        "model": "gpt-4",
+        "api_key": "YOUR_OPENAI_API_KEY"
     }
-]
+] 
