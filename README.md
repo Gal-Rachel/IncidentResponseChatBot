@@ -1,82 +1,71 @@
-# 🛡️ Incident Response ChatBot
+# Incident Response ChatBot 🛡️🤖
 
-A full-stack chatbot application designed to assist with **incident response** in cybersecurity environments.  
-It allows users to interact through a sleek chat interface, while automatically storing and organizing conversations in real-time.
+A smart assistant designed to help security analysts respond to cybersecurity incidents by generating tailored playbooks based on alerts received from Wazuh SIEM.  
+Built using OpenAI AutoGen Agents, Python, and Node.js.
 
 ---
 
 ## 🚀 Features
 
-- 💬 **Chat interface** built with **React**
-- 🧠 Conversation handling via chatbot logic
-- 📁 **Chat history management** with clickable titles
-- 💾 **Real-time saving** to **MongoDB Atlas**
-- ⚙️ **Backend with Express** for chat processing and database interaction
-- 🔁 Auto-updating interface — no page refresh needed
+- 🔍 Automatically analyzes Wazuh alerts
+- 🧠 Uses AutoGen to dynamically generate incident response playbooks
+- 🗨️ Interactive chatbot assistant to guide analysts
+- 🌐 Backend written in Python + Node.js for full-stack capabilities
 
 ---
 
-## 🧱 Tech Stack
+## 🛠️ Tech Stack
 
-| Frontend        | Backend          | Database        |
-|-----------------|------------------|-----------------|
-| React, Tailwind | Node.js, Express | MongoDB Atlas   |
-
----
-
-## 📂 Project Structure
-
-IncidentResponseChatBot/ 
-    ├── client/ # React frontend 
-        │ ├── components/ # Chat, MessageList, History, etc. 
-        │ └── ... 
-        ├── server/ # Express backend 
-            │ ├── routes/ # API routes 
-            │ ├── models/ # Mongoose schemas 
-            │ └── ... 
-            ├── .gitignore 
-            ├── package.json 
-    └── README.md
+- Python 3.11
+- [AutoGen (pyautogen)](https://github.com/microsoft/autogen)
+- Node.js
+- Flask (Python server)
+- React
 
 ---
 
-## 🛠️ Getting Started
+## 📦 Installation
 
-### 1. Clone the repository:
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/Gal-Rachel/IncidentResponseChatBot.git
 cd IncidentResponseChatBot
+2. Install Python Dependencies
+Make sure you're using Python 3.11 (AutoGen 0.2.0 requires Python >=3.8 and <3.12).
 
-2. Install dependencies:
+cd autogen-server
+pip install -r requirements.txt
+pip install pyautogen==0.2.0
 
-Backend:
-cd server
+3. Install Node.js Dependencies
+If you're using a Node.js frontend/backend in your project:
+
+
+cd ../your-node-folder-name
 npm install
+(Replace your-node-folder-name with the actual folder if needed)
 
-Frontend:
-cd ../client
-npm install
 
-3. Configure environment variables:
+🧪 Usage
+Start the Python backend:
 
-Create a .env file in /server with the following:
-MONGO_URI=your_mongodb_atlas_connection_string
-PORT=5000
+cd autogen-server
+python app.py
+Start the Node.js service (if applicable):
 
-4. Run the project:
-In two terminals:
-
-Backend
-cd server
 npm start
+Interact with the chatbot interface to analyze and respond to Wazuh alerts dynamically.
 
-Frontend
-cd client
-npm start
+🧑‍💻 Team
+Gal
+Rachel
 
-```
+📄 License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-👩‍💻 Authors
-Gal Shmuel 
-Rachel Yeholashet
+💡 Notes
+Make sure to add Python to your system PATH when installing.
+
+Use Python 3.11 to ensure compatibility with pyautogen==0.2.0.
+
 
