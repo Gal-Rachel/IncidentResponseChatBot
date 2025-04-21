@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ChatView.css';
 import { IoPersonOutline } from "react-icons/io5";
@@ -6,181 +6,164 @@ import { RiRobot2Line } from "react-icons/ri";
 import ChatInput from '../ChatInput/ChatInput';
 
 export default function ChatView({ onChatUpdate }) {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState("");
+    const [isThinking, setIsThinking] = useState(false);
+    const messagesEndRef = useRef(null);
 
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
-    // const { id: routeId } = useParams();
-    // const navigate = useNavigate();
-    // const [messages, setMessages] = useState([]);
-    // const [input, setInput] = useState("");
-    // const [isThinking, setIsThinking] = useState(false);
-    // const [currentChatId, setCurrentChatId] = useState(null); // אתחל ל-null
+    const fetchChat = useCallback(async () => {
+        if (!id) return;
+        try {
+            const response = await fetch(`http://localhost:5000/api/chats/${id}`);
+            if (!response.ok) throw new Error('Failed to fetch chat');
+            const chat = await response.json();
+            setMessages(chat.messages || []);
+        } catch (error) {
+            console.error('Error fetching chat:', error);
+            navigate('/');
+        }
+    }, [id, navigate]);
 
-    // useEffect(() => {
-    //     setCurrentChatId(routeId); // עדכן את ה-ID כש-routeId משתנה
-    // }, [routeId]);
+    useEffect(() => {
+        fetchChat();
+    }, [fetchChat]);
 
-    // // יצירת שיחה חדשה
-    // const createNewChat = async (content) => {
-    //     const userMsg = { role: "user", content };
-    //     const botResponse = `אני בוט, קיבלתי את: ${content}`;
-    //     const botMsg = { role: "bot", content: botResponse };
+    const renderBoldText = (text) => {
+        const parts = text.split(/(\*\*.*?\*\*)/g);
+        return parts.map((part, index) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+                return <strong key={index}>{part.slice(2, -2)}</strong>;
+            }
+            return part;
+        });
+    };
 
-    //     try {
-    //         const response = await fetch('http://localhost:5000/', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({
-    //                 title: content,
-    //                 messages: [userMsg, botMsg]
-    //             }),
-    //         });
+    const saveMessage = async (message) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(message)
+            });
 
-    //         const chat = await response.json();
-    //         const newId = chat._id;
+            if (!response.ok) throw new Error('Failed to save message');
 
-    //         setMessages([
-    //             { sender: "user", text: content },
-    //             { sender: "bot", text: botResponse }
-    //         ]);
+            // Update the chat list in the sidebar
+            if (onChatUpdate) onChatUpdate();
+        } catch (error) {
+            console.error('Error saving message:', error);
+        }
+    };
 
-    //         setCurrentChatId(newId); // עדכן את ה-ID המקומי מיד לאחר יצירה
-    //         navigate(`/chat/${newId}`);
-    //         if (onChatUpdate) onChatUpdate();
+    const sendMessage = async (content) => {
+        if (!content.trim() || isThinking) return;
 
-    //     } catch (error) {
-    //         console.error("Error creating new chat:", error);
-    //     }
-    // };
+        const userMessage = { role: "user", content };
+        console.log('Sending message:', userMessage);
+        setMessages(prev => [...prev, userMessage]);
+        setInput("");
+        setIsThinking(true);
 
-    // // שליחה לעדכון הודעות
-    // const sendMessage = async (content) => {
-    //     const userMsg = { sender: "user", text: content };
-    //     const botResponse = `אני בוט, קיבלתי את: ${content}`;
-    //     const botMsg = { sender: "bot", text: botResponse };
+        try {
+            if (!id) {
+                // Create new chat if no ID exists
+                console.log('Creating new chat...');
+                const response = await fetch('http://localhost:5000/api/chats', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: content.substring(0, 30) + '...',
+                        messages: [userMessage]
+                    })
+                });
 
-    //     setMessages(prev => [...prev, userMsg]);
-    //     setIsThinking(true);
+                if (!response.ok) throw new Error('Failed to create chat');
+                const newChat = await response.json();
+                console.log('New chat created:', newChat);
+                navigate(`/chat/${newChat._id}`);
+                if (onChatUpdate) onChatUpdate();
+                return;
+            }
 
-    //     try {
-    //         if (!currentChatId) return; // השתמש ב-currentChatId
+            // Save user message and get autogen response through the backend
+            console.log('Sending message to backend...');
+            const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userMessage)
+            });
 
-    //         // שליחת הודעת המשתמש לשרת
-    //         await fetch(`http://localhost:5000/chats/${currentChatId}`, { // השתמש ב-currentChatId
-    //             method: 'PUT',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ role: "user", content })
-    //         });
+            if (!response.ok) throw new Error('Failed to send message');
 
-    //         await new Promise(resolve => setTimeout(resolve, 1000));
-    //         setMessages(prev => [...prev, botMsg]);
-    //         setIsThinking(false);
+            const updatedChat = await response.json();
+            console.log('Received updated chat with autogen response:', updatedChat);
+            setMessages(updatedChat.messages);
 
-    //         // שליחת הודעת הבוט לשרת
-    //         await fetch(`http://localhost:5000/chats/${currentChatId}`, { // השתמש ב-currentChatId
-    //             method: 'PUT',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ role: "bot", content: botResponse })
-    //         });
+            if (onChatUpdate) onChatUpdate();
 
-    //         if (onChatUpdate) onChatUpdate();
+        } catch (error) {
+            console.error('Error sending message:', error);
+        } finally {
+            setIsThinking(false);
+        }
+    };
 
-    //     } catch (err) {
-    //         console.error("Failed to update chat:", err);
-    //         setIsThinking(false);
-    //     }
-    // };
+    const handleSend = () => {
+        if (!input.trim()) return;
+        sendMessage(input);
+    };
 
-    // // שליחה של הודעה
-    // const handleSend = () => {
-    //     console.log("Current ID in handleSend:", currentChatId);
-    //     if (!input.trim() || isThinking) return;
-    //     if (!currentChatId) {
-    //         console.log("No ID found, creating new chat.");
-    //         createNewChat(input);
-    //     } else {
-    //         console.log("ID found, sending message to existing chat:", currentChatId);
-    //         sendMessage(input);
-    //     }
-    //     setInput("");
-    // };
+    return (
+        <div className="ChatView">
+            <div className="ChatHeader">
+                <h2>
+                    <RiRobot2Line className="icon" />
+                    Chat with IR Bot
+                </h2>
+            </div>
 
-    // useEffect(() => {
-    //     console.log("🔄 useEffect triggered with routeId:", routeId);
-    //     if (!routeId) return;
+            <div className="ChatMessages">
+                {messages.map((msg, index) => (
+                    <div key={index} className={`message ${msg.role === 'user' ? 'user' : 'bot'}`}>
+                        {msg.role === 'user' ? (
+                            <div className="user-icon-wrapper icon-wrapper">
+                                <IoPersonOutline className="icon" />
+                            </div>
+                        ) : (
+                            <div className="bot-icon-wrapper icon-wrapper">
+                                <RiRobot2Line className="icon" />
+                            </div>
+                        )}
+                        <div className="message-text">{renderBoldText(msg.content)}</div>
+                    </div>
+                ))}
+                <div ref={messagesEndRef} />
+            </div>
 
-    //     const fetchChat = async () => {
-    //         console.log("📡 Fetching chat with ID:", routeId);
-    //         try {
-    //             const response = await fetch(`http://localhost:5000/chats/${routeId}`);
-    //             const chat = await response.json();
-    //             console.log("📥 Chat data received:", chat);
-
-    //             const formattedMessages = chat.messages.map(msg => ({
-    //                 sender: msg.role === 'user' ? 'user' : 'bot',
-    //                 text: msg.content,
-    //             }));
-
-    //             setMessages(formattedMessages);
-    //             setCurrentChatId(routeId);
-    //         } catch (err) {
-    //             console.error("❌ Error fetching chat:", err);
-    //         }
-    //     };
-
-    //     fetchChat();
-    // }, [routeId]);
-
-
-
-    // // גלילת ההודעות
-    // useEffect(() => {
-    //     const messagesContainer = document.querySelector(".ChatMessages");
-    //     if (messagesContainer) {
-    //         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    //     }
-    // }, [messages]);
-
-
-
-    // return (
-    //     <div className="ChatView">
-    //         <div className="ChatHeader">
-    //             <h2>
-    //                 <RiRobot2Line className="icon" />
-    //                 Chat with IR Bot
-    //             </h2>
-    //         </div>
-    //         <div className="ChatMessages">
-    //             {messages.map((msg, index) => (
-    //                 <div key={index} className={`message ${msg.sender}`}>
-    //                     {msg.sender === 'user' ? (
-    //                         <div className="user-icon-wrapper icon-wrapper">
-    //                             <IoPersonOutline className="icon" />
-    //                         </div>
-    //                     ) : (
-    //                         <div className="bot-icon-wrapper icon-wrapper">
-    //                             <RiRobot2Line className="icon" />
-    //                         </div>
-    //                     )}
-    //                     <div className="message-text">{msg.text}</div>
-    //                 </div>
-    //             ))}
-    //         </div>
-    //         <div className="ChatInputArea">
-    //             <ChatInput
-    //                 input={input}
-    //                 onChange={(e) => setInput(e.target.value)}
-    //                 onSend={handleSend}
-    //             />
-    //             <button
-    //                 onClick={handleSend}
-    //                 className={`send-button ${isThinking ? 'thinking' : ''}`}
-    //                 disabled={isThinking}
-    //             >
-    //                 {isThinking ? <div className="spinner"></div> : 'Send'}
-    //             </button>
-    //         </div>
-    //     </div>
-    // );
+            <div className="ChatInputArea">
+                <ChatInput
+                    input={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onSend={handleSend}
+                />
+                <button
+                    onClick={handleSend}
+                    className={`send-button ${isThinking ? 'thinking' : ''}`}
+                    disabled={isThinking || !input.trim()}
+                >
+                    {isThinking ? <div className="spinner"></div> : 'Send'}
+                </button>
+            </div>
+        </div>
+    );
 }

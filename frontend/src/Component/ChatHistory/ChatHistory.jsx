@@ -1,99 +1,150 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // הוספנו useNavigate
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ChatHistory.css';
 import { SiCyberdefenders } from "react-icons/si";
 import { IoSearchSharp } from "react-icons/io5";
+import { FaTrash } from "react-icons/fa";
 
-export default function ChatHistory({ onChatUpdate }) {
+export default function ChatHistory({ chats, onChatUpdate }) {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [deletingChatId, setDeletingChatId] = useState(null);
+    const navigate = useNavigate();
 
-    return (
-    <div></div>    
+    const filteredChats = chats.filter(chat =>
+        chat.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // const [chats, setChats] = useState([]);
-    // const navigate = useNavigate(); // שימוש ב-navigate
+    const handleNewChat = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const initialMessage = {
+                role: "bot",
+                content: "Hello! I'm your Incident Response Assistant. How can I help you today?"
+            };
 
-    // // טוען את השיחות הקיימות
-    // useEffect(() => {
-    //     const fetchChats = async () => {
-    //         try {
-    //             const response = await fetch('http://localhost:5000/');
-    //             const data = await response.json();
-    //             setChats(data);
-    //         } catch (err) {
-    //             console.error("Error fetching chats:", err);
-    //         }
-    //     };
+            const response = await fetch('http://localhost:5000/api/chats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: initialMessage.content,
+                    messages: [initialMessage]
+                })
+            });
 
-    //     fetchChats();
-    // }, [onChatUpdate]); // נוסיף את onChatUpdate כהתאם כדי לעדכן את ההיסטוריה
+            if (!response.ok) {
+                throw new Error('Failed to create new chat');
+            }
 
-    // // יצירת שיחה חדשה
-    // const createNewChat = async () => {
+            const newChat = await response.json();
+            if (onChatUpdate) onChatUpdate();
+            navigate(`/chat/${newChat._id}`);
+        } catch (error) {
+            console.error('Error creating new chat:', error);
+            setError('Failed to create new chat');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    //     const userMsg = { role: "user", content: "היי אני צריכה עזרה!" };
-    //     const botResponse = "אני כאן עבורך!";
-    //     const botMsg = { role: "bot", content: botResponse };
-    //     const newChatTitle = "New Chat"; // תוכל לשנות את הכותרת פה
+    const handleChatClick = (chatId) => {
+        navigate(`/chat/${chatId}`);
+    };
 
-    //     try {
-    //         const response = await fetch('http://localhost:5000/', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({
-    //                 title: newChatTitle,
-    //                 messages: [userMsg, botMsg]
-    //             }),
-    //         });
+    const handleDeleteChat = async (chatId, e) => {
+        e.stopPropagation(); // Prevent chat click when clicking delete button
+        if (!window.confirm('Are you sure you want to delete this chat?')) {
+            return;
+        }
 
-    //         const chat = await response.json();
-    //         setChats(prevChats => [...prevChats, chat]); // עדכון ההיסטוריה עם השיחה החדשה
+        setDeletingChatId(chatId);
+        try {
+            const response = await fetch(`http://localhost:5000/api/chats/${chatId}`, {
+                method: 'DELETE',
+            });
 
-    //         // הפנה את המשתמש ל-ChatView של השיחה החדשה
-    //         navigate(`/chat/${chat._id}`);
-    //         if (onChatUpdate) onChatUpdate(); // עדכון היסטוריית השיחות אחרי יצירת שיחה חדשה
-    //     } catch (error) {
-    //         console.error("Error creating new chat:", error);
-    //     }
-    // };
+            if (!response.ok) {
+                throw new Error('Failed to delete chat');
+            }
 
-//     return (
-//         <div className="ChatHistory">
-//             <div className="ChatHistoryHeader">
-//                 <div className="ChatHistoryHeaderTitleText">
-//                     <SiCyberdefenders className="icon" />
-//                     <span>Chat History</span>
-//                 </div>
-//             </div>
+            if (onChatUpdate) onChatUpdate();
+        } catch (error) {
+            console.error('Error deleting chat:', error);
+            setError('Failed to delete chat');
+        } finally {
+            setDeletingChatId(null);
+        }
+    };
 
-//             <div className="ChatHistoryBody">
-//                 <div className="search-container">
-//                     <IoSearchSharp />
-//                     <input
-//                         type="text"
-//                         placeholder=" Search previous chats..."
-//                         className="search-input"
-//                     />
-//                 </div>
-//                 <button
-//                     className="new-chat-button"
-//                     onClick={createNewChat}
-//                 >
-//                     Start New Chat
-//                 </button>
+    return (
+        <div className="ChatHistory">
+            <div className="ChatHistoryHeader">
+                <div className="ChatHistoryHeaderTitleText">
+                    <SiCyberdefenders className="icon" />
+                    <span>Chat History</span>
+                </div>
+            </div>
 
-//                 <ul className="chat-list">
-//                     {chats.map(chat => (
-//                         <li key={chat._id} className="chat-item">
-//                             <Link to={`/chat/${chat._id}`}>{chat.title}</Link>
-//                         </li>
-//                     ))}
-//                 </ul>
-//             </div>
-//             <div className="PoweredBy">
-//                 powered by Gal Shmuel & Rachel Yeholashet
-//             </div>
-//         </div>
-//     );
-    //
+            <div className="search-container">
+                <IoSearchSharp />
+                <input
+                    type="text"
+                    placeholder="Search chats..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+
+            <button
+                className="new-chat-button"
+                onClick={handleNewChat}
+                disabled={loading}
+            >
+                {loading ? 'Creating...' : 'New Chat'}
+            </button>
+
+            <div className="ChatHistoryBody">
+                {error ? (
+                    <div style={{ color: 'red', textAlign: 'center', padding: '20px' }}>
+                        {error}
+                    </div>
+                ) : (
+                    <ul className="chat-list">
+                        {filteredChats.map((chat) => (
+                            <li
+                                key={chat._id}
+                                className="chat-item"
+                                onClick={() => handleChatClick(chat._id)}
+                            >
+                                <div className="chat-link">
+                                    {chat.title}
+                                </div>
+                                <button
+                                    className="delete-chat-button"
+                                    onClick={(e) => handleDeleteChat(chat._id, e)}
+                                    disabled={deletingChatId === chat._id}
+                                >
+                                    {deletingChatId === chat._id ? 'Deleting...' : <FaTrash />}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+
+            <div className="PoweredBy">
+                Powered by
+                <a
+                    href="https://github.com/Gal-Rachel/IncidentResponseChatBot"
+                    target="_blank" rel="noopener noreferrer">
+                    <br />
+                    Gal Shmuel & Rachel Yeholashet
+                </a>
+            </div>
+        </div>
+    );
 }

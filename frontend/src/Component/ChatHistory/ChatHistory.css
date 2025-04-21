@@ -7,6 +7,9 @@
     background-color: rgb(15, 32, 61);
     box-shadow: rgb(4, 6, 54) 0px 0px 10px 0px;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 /* הסתרת סרגל הגלילה */
@@ -31,17 +34,17 @@
 .ChatHistoryBody {
     overflow-y: scroll;
     /* מאפשר גלילה על התוכן */
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 250px);
     /* תתאם את הגובה לפי גובה הכותרת והחיפוש */
     padding-right: 0;
-    padding-top: 1.5rem;
-    /* הוסף ריווח עליון כדי למנוע חפיפות עם הכותרת */
     padding-left: 0.5rem;
+
     box-sizing: border-box;
     -ms-overflow-style: none;
     /* מסיר את סרגל הגלילה בדפדפני אינטרנט אקספלורר */
     scrollbar-width: none;
     /* מסיר את סרגל הגלילה בדפדפני Firefox */
+    flex: 1;
 }
 
 .ChatHistoryHeader {
@@ -143,6 +146,9 @@
 
 /* המראה של פריטי הרשימה */
 .chat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.75rem;
     margin-bottom: 0.5rem;
     border-radius: 6px;
@@ -150,15 +156,8 @@
     color: white;
     cursor: pointer;
     transition: background-color 0.2s;
-    display: flex;
-    justify-content: center;
-    /* ממרכז את הלינק בהורה */
-    align-items: center;
-    /* ממקם את הלינק במרכז מבחינה אנכית */
     overflow: hidden;
-    /* מכסה טקסט חורג */
     white-space: nowrap;
-    /* מונע מעבר לשורה חדשה */
 }
 
 .chat-item:hover {
@@ -166,45 +165,29 @@
 }
 
 /* העיצוב של הלינק */
-.chat-item a {
-    display: inline-block;
+.chat-link {
     color: #ffffff;
-    /* הצבע הרצוי */
     text-decoration: none;
-    /* הסרת קו תחתון */
     text-align: center;
-    /* ממקם את הטקסט במרכז */
-
     max-width: 200px;
-    /* הגבלת רוחב הכפתור */
     overflow: hidden;
-    /* חותך טקסט חורג */
     text-overflow: ellipsis;
-    /* הוספת "..." אם הטקסט ארוך מדי */
     white-space: nowrap;
-    /* מונע מעבר לשורה חדשה */
     border-radius: 5px;
-    /* מעגל פינות */
     transition: background-color 0.3s, transform 0.3s;
-    /* אנימציה חלקה */
+    width: 100%;
 }
 
-/* צבע בעת ריחוף */
-.chat-item a:hover {
+.chat-item:hover .chat-link {
     color: #787878;
-    /* צבע בעת ריחוף */
-    text-decoration: none;
-    transform: scale(1.15);
-    /* הגדלה קלה של הלינק */
 }
-
 
 .PoweredBy {
     text-align: center;
     font-size: 0.9rem;
     color: #ccc;
     /* צבע רך */
-    margin-top: 1rem;
+    margin-top: auto;
     padding: 1rem;
     background-color: #1e3a5f;
     /* צבע רקע כהה */
@@ -214,6 +197,10 @@
     /* פינות מעוגלות בתחתית */
     box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
     /* צללית רכה */
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .PoweredBy a {
@@ -222,4 +209,28 @@
     text-decoration: none;
     /* הסרת קו תחתון */
     font-weight: bold;
+}
+
+.delete-chat-button {
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-chat-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.delete-chat-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }

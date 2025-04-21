@@ -28,12 +28,17 @@
 }
 
 .message {
+    word-wrap: break-word;
+    white-space: pre-wrap;
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     max-width: 60%;
     position: relative;
+    background-color: #7291a3;
+
+
 }
 
 .message.user {
@@ -43,7 +48,7 @@
 
 .message.bot {
     align-self: flex-start;
-    background-color: #1e3a5f;
+    background-color: #778ca9;
 }
 
 .icon-wrapper {
