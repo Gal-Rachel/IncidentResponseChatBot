@@ -5,12 +5,18 @@
     background-color: #122a4c;
     color: white;
     padding: 1rem;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .ChatHeader {
-    border-bottom: 1px solid #2d4a77;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+    border-bottom: 2px solid #2d4a77;
+    margin-bottom: 0.5rem;
+    padding: 0.59rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ChatMessages {
@@ -20,11 +26,30 @@
     flex-direction: column;
     gap: 0.75rem;
     padding: 0 2rem;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: #2d4a77 #122a4c;
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .ChatMessages::-webkit-scrollbar {
-    display: none;
+    width: 8px;
+}
+
+.ChatMessages::-webkit-scrollbar-track {
+    background: #122a4c;
+    border-radius: 4px;
+}
+
+.ChatMessages::-webkit-scrollbar-thumb {
+    background-color: #2d4a77;
+    border-radius: 4px;
+    border: 2px solid #122a4c;
+}
+
+.ChatMessages::-webkit-scrollbar-thumb:hover {
+    background-color: #3478c3;
 }
 
 .message {
@@ -37,8 +62,10 @@
     max-width: 60%;
     position: relative;
     background-color: #7291a3;
-
-
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    box-sizing: border-box;
 }
 
 .message.user {
@@ -68,8 +95,6 @@
     left: -2rem;
     /* המרחק של האייקון מההודעה בצד שמאל */
 }
-
-
 
 .ChatInputArea {
     display: flex;
@@ -101,28 +126,15 @@
 
 .ChatHeader h2 {
     font-size: 1.5rem;
-    /* גודל טקסט מותאם */
     font-weight: bold;
-    /* הדגשת הטקסט */
     color: #ffffff;
-    /* צבע לבן לכותרת */
     display: flex;
     align-items: center;
-    /* ממרכז את התוכן במרכז האנכי */
     justify-content: center;
-    /* ממרכז את התוכן במרכז האופקי */
     gap: 0.5rem;
-    /* ריווח בין האייקון לכותרת */
     text-align: center;
-    /* ממקם את הטקסט במרכז */
-}
-
-.ChatHeader {
-    display: flex;
-    justify-content: center;
-    /* ממרכז את כל ה-ChatHeader */
-    align-items: center;
-    /* ממרכז את התוכן בתוך ה-ChatHeader */
+    margin: 0;
+    padding: 0;
 }
 
 .send-button {
@@ -157,5 +169,322 @@
 
     100% {
         transform: rotate(360deg);
+    }
+}
+
+.message-text {
+    width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+.message-text p {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+}
+
+.message-text p:first-child {
+    margin-top: 0;
+}
+
+.message-text p:last-child {
+    margin-bottom: 0;
+}
+
+.message-text pre {
+    background-color: #000000e7;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 0.75rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: #2d4a77 rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.code-block-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #2d4a77;
+    z-index: 1;
+}
+
+.code-language {
+    color: #569cd6;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-left: 0.5rem;
+}
+
+.copy-button {
+    position: sticky;
+    right: 0;
+    background-color: #2d4a77;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 0.5rem;
+}
+
+.copy-button:hover {
+    background-color: #3478c3;
+}
+
+.copy-button:active {
+    transform: scale(0.95);
+}
+
+.message-text code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    white-space: pre;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Language-specific syntax highlighting */
+.message-text code.language-javascript {
+    color: #d4d4d4;
+}
+
+.message-text code.language-javascript .keyword {
+    color: #569cd6;
+}
+
+.message-text code.language-javascript .string {
+    color: #ce9178;
+}
+
+.message-text code.language-javascript .number {
+    color: #b5cea8;
+}
+
+.message-text code.language-javascript .comment {
+    color: #6a9955;
+}
+
+.message-text code.language-python {
+    color: #d4d4d4;
+}
+
+.message-text code.language-python .keyword {
+    color: #569cd6;
+}
+
+.message-text code.language-python .string {
+    color: #ce9178;
+}
+
+.message-text code.language-python .number {
+    color: #b5cea8;
+}
+
+.message-text code.language-python .comment {
+    color: #6a9955;
+}
+
+.message-text .json-key {
+    color: #4ea9da;
+}
+
+.message-text .json-string {
+    color: #ce9178;
+}
+
+.message-text .json-number {
+    color: hsl(0, 80%, 53%);
+    font-weight: 700;
+}
+
+.message-text .json-boolean {
+    color: #48fdd0;
+}
+
+.message-text .json-null {
+    color: #671d92;
+}
+
+/* Bold Text Styles */
+.message-text strong {
+    color: #214668;
+    font-weight: bold;
+    text-decoration: underline;
+
+}
+
+/* Markdown Headers */
+.message-text .markdown-header {
+    margin: 0.5rem 0;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: underline;
+    color: #214668;
+}
+
+.message-text h1.markdown-header {
+    font-size: 1.8rem;
+    border-bottom: 2px solid #2d4a77;
+    padding-bottom: 0.5rem;
+    text-decoration: underline;
+    margin-top: 0;
+}
+
+.message-text h2.markdown-header {
+    font-size: 1.5rem;
+    border-bottom: 1px solid #2d4a77;
+    padding-bottom: 0.3rem;
+    text-decoration: underline;
+    margin-top: 0;
+}
+
+.message-text h3.markdown-header {
+    font-size: 1.3rem;
+    text-decoration: underline;
+    margin-top: 0;
+}
+
+.message-text h4.markdown-header {
+    font-size: 1.1rem;
+    text-decoration: underline;
+    margin-top: 0;
+}
+
+.message-text h5.markdown-header {
+    font-size: 1rem;
+    text-decoration: underline;
+    margin-top: 0;
+}
+
+.message-text h6.markdown-header {
+    font-size: 0.9rem;
+    text-decoration: underline;
+    margin-top: 0;
+}
+
+/* Remove the black background from the message bubble */
+.message:has(pre) {
+    padding: 0rem 0.5rem;
+    background-color: #0000008f;
+}
+
+.message.user:has(pre) {
+    padding: 0rem 0.5rem;
+    background-color: #3479c370;
+}
+
+.message.bot:has(pre) {
+    padding: 0rem 0.5rem;
+    background-color: #778ca991;
+}
+
+/* List Styles */
+.message-text ul {
+    list-style-type: none;
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.message-text ul li {
+    position: relative;
+    padding-left: 1rem;
+    margin: 0.25rem 0;
+}
+
+.message-text ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #0d4766;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .ChatView {
+        height: 50vh;
+        padding: 0.5rem;
+    }
+
+    .ChatHeader {
+        padding: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .ChatHeader h2 {
+        font-size: 1.2rem;
+    }
+
+    .ChatMessages {
+        padding: 0 1rem;
+    }
+
+    .message {
+        max-width: 85%;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .icon-wrapper {
+        font-size: 1.2rem;
+    }
+
+    .user-icon-wrapper {
+        right: -1.5rem;
+    }
+
+    .bot-icon-wrapper {
+        left: -1.5rem;
+    }
+
+    .ChatInputArea {
+        padding: 0.5rem;
+    }
+
+    .ChatInputArea input {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .ChatInputArea button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ChatView {
+        height: 60vh;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+
+    .ChatHeader {
+        padding: 0.4rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .ChatHeader h2 {
+        font-size: 1rem;
+    }
+
+    .icon-wrapper {
+        font-size: 1rem;
     }
 }

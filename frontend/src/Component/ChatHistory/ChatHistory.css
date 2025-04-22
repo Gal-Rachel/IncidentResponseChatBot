@@ -6,10 +6,51 @@
     padding: 1rem;
     background-color: rgb(15, 32, 61);
     box-shadow: rgb(4, 6, 54) 0px 0px 10px 0px;
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     position: relative;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .ChatHistory {
+        width: 100%;
+        height: auto;
+        max-height: 50vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        transform: translateY(-100%);
+    }
+
+    .ChatHistory.active {
+        transform: translateY(0);
+    }
+
+    .ChatHistoryBody {
+        max-height: calc(50vh - 150px);
+    }
+}
+
+/* Modern scrollbar for ChatHistory */
+.ChatHistory::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ChatHistory::-webkit-scrollbar-track {
+    background: rgb(15, 32, 61);
+    border-radius: 3px;
+}
+
+.ChatHistory::-webkit-scrollbar-thumb {
+    background-color: #2d4a77;
+    border-radius: 3px;
+}
+
+.ChatHistory::-webkit-scrollbar-thumb:hover {
+    background-color: #3478c3;
 }
 
 /* הסתרת סרגל הגלילה */

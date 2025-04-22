@@ -5,3 +5,9 @@
     overflow: hidden;
     background-color: #0b1a33;
 }
+
+@media (max-width: 768px) {
+    .ChatPage {
+        flex-direction: column;
+    }
+}
