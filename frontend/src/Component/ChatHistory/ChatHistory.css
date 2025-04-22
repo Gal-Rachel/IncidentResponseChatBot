@@ -32,6 +32,10 @@
     .ChatHistoryBody {
         max-height: calc(50vh - 150px);
     }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
 }
 
 /* Modern scrollbar for ChatHistory */

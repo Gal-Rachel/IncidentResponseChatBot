@@ -1,8 +1,8 @@
 [
     {
-        "model": "thudm/glm-4-32b:free",
+        "model": "microsoft/mai-ds-r1:free",
         "base_url": "https://openrouter.ai/api/v1",
-        "api_key": "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",
+        "api_key": "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",
         "price": [0.01, 0.005]
     }
 ]

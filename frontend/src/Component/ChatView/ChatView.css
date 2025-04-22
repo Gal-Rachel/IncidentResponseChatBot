@@ -323,7 +323,7 @@
 
 /* Bold Text Styles */
 .message-text strong {
-    color: #214668;
+    color: #183752;
     font-weight: bold;
     text-decoration: underline;
 
@@ -335,7 +335,7 @@
     color: #ffffff;
     font-weight: bold;
     text-decoration: underline;
-    color: #214668;
+    color: #183752;
 }
 
 .message-text h1.markdown-header {
@@ -391,7 +391,7 @@
 
 .message.bot:has(pre) {
     padding: 0rem 0.5rem;
-    background-color: #778ca991;
+    background-color: #778ca9;
 }
 
 /* List Styles */

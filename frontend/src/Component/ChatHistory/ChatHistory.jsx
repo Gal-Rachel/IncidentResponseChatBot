@@ -187,14 +187,6 @@ export default function ChatHistory({ chats, onChatUpdate }) {
             >
                 <FaBars />
             </button>
-
-            <style jsx>{`
-                @media (max-width: 768px) {
-                    .mobile-menu-toggle {
-                        display: block;
-                    }
-                }
-            `}</style>
         </>
     );
 }
