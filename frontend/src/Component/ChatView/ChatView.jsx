@@ -5,6 +5,12 @@ import { IoPersonOutline } from "react-icons/io5";
 import { RiRobot2Line } from "react-icons/ri";
 import ChatInput from '../ChatInput/ChatInput';
 
+
+const formatTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString(); // אפשר גם לבחור toLocaleTimeString() או toLocaleDateString()
+};
+
 const formatJson = (text) => {
     try {
         // Check if the text is a JSON string
@@ -226,7 +232,7 @@ export default function ChatView({ onChatUpdate }) {
     const sendMessage = async (content) => {
         if (!content.trim() || isThinking) return;
 
-        const userMessage = { role: "user", content };
+        const userMessage = { role: "user", content, timestamp: new Date().toISOString() };
         console.log('Sending message:', userMessage);
         setMessages(prev => [...prev, userMessage]);
         setInput("");
@@ -302,7 +308,14 @@ export default function ChatView({ onChatUpdate }) {
                                 <RiRobot2Line className="icon" />
                             </div>
                         )}
-                        <div className="message-text">{renderMessageContent(msg.content)}</div>
+                        <div className="message-text">
+                            {renderMessageContent(msg.content)}
+                            {msg.timestamp && (
+                                <div className={`message-time ${msg.role}`}>
+                                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 ))}
                 <div ref={messagesEndRef} />

@@ -78,6 +78,23 @@
     background-color: #778ca9;
 }
 
+
+.message-time {
+    font-size: 0.75rem;
+    color: #090909;
+    margin-top: 4px;
+}
+
+.message-time.user {
+    left: 10px;
+    align-self: flex-start;
+}
+
+.message-time.bot {
+    right: 10px;
+    align-self: flex-end;
+}
+
 .icon-wrapper {
     font-size: 1.5rem;
     color: white;
